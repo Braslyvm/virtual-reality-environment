@@ -752,6 +752,10 @@ PrefabInstance:
       propertyPath: m_Size.z
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 9155506616573181093, guid: b0f7837ed9b111245a5a5063090bf660, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2819,7 +2823,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7da2b750eef7991488852f5a66312727, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.316
+      value: 2.578
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7da2b750eef7991488852f5a66312727, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3663,7 +3667,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4740,7 +4744,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1644703820982035308, guid: 77e7c27b2c5525e4aa8cc9f99d654486, type: 3}
       propertyPath: m_EnableFarCasting
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1644703820982035308, guid: 77e7c27b2c5525e4aa8cc9f99d654486, type: 3}
       propertyPath: m_EnableNearCasting
@@ -6337,7 +6341,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7da2b750eef7991488852f5a66312727, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.58
+      value: 3.39
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7da2b750eef7991488852f5a66312727, type: 3}
       propertyPath: m_LocalPosition.y
@@ -7780,11 +7784,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84444b2dbc37edf408392e2056c2d1f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProbarTrigger
---- !u!65 &2122423528 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 9155506616573181093, guid: b0f7837ed9b111245a5a5063090bf660, type: 3}
-  m_PrefabInstance: {fileID: 166942494}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2122423532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7798,7 +7797,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InicioPruebaBotones
   glow: {fileID: 1842966412}
-  triggerInicio: {fileID: 2122423528}
+  trigger: {fileID: 2122423525}
   voz4: {fileID: 242611352}
   voz5: {fileID: 490092557}
   boton1: {fileID: 1883659048}
