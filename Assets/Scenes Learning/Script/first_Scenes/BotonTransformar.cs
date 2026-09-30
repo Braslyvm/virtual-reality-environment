@@ -5,90 +5,98 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class BotonTransformar : MonoBehaviour
 {
+    [Header("Transformacion")]
     public SkinnedMeshRenderer cubo;
-
     public string blendShape = "Esfera";
     public float duracion = 1.5f;
 
-    public float distanciaPresion = 0.015f;
-    public float presionNecesaria = 0.008f;
+    [Header("Presion")]
+    public float recorridoPresion = 0.025f;
+    public float presionNecesaria = 0.018f;
 
-    public float giroMaximo = 90f;
-    public float giroNecesario = 35f;
+    [Header("Giro")]
+    public float giroMaximo = 70f;
+    public float giroNecesario = 40f;
+    public bool giroHorario = true;
 
-    public float velocidadRetorno = 8f;
+    [Header("Confirmacion")]
+    public float tiempoBloqueadoNecesario = 0.30f;
 
+    [Header("Retorno")]
+    public float velocidadRetorno = 10f;
+
+    [Header("Audio")]
     public AudioSource voz8;
     public AudioSource voz9;
 
-    public XRGrabInteractable siguienteBoton;
+    [Header("Siguiente")]
+    public XRSimpleInteractable siguienteBoton;
 
-    private XRGrabInteractable grab;
+    private XRSimpleInteractable interactable;
+
+    private Transform mano;
 
     private Vector3 posicionInicial;
     private Quaternion rotacionInicial;
 
-    private Vector3 posicionManoInicial;
-    private Vector3 direccionInicial;
-
-    private Transform mano;
+    private float alturaManoInicial;
+    private Vector3 direccionGiroInicial;
 
     private int indice;
 
-    private bool agarrado;
+    private bool seleccionado;
+    private bool presionado;
+    private bool giroBloqueado;
     private bool activado;
+
+    private float tiempoBloqueado;
+
 
     private void Awake()
     {
-        grab = GetComponent<XRGrabInteractable>();
+        interactable = GetComponent<XRSimpleInteractable>();
 
-        posicionInicial = transform.localPosition;
-        rotacionInicial = transform.localRotation;
+        posicionInicial = transform.position;
+        rotacionInicial = transform.rotation;
 
-        grab.selectEntered.AddListener(Agarrar);
-        grab.selectExited.AddListener(Soltar);
+        interactable.selectEntered.AddListener(Agarrar);
+        interactable.selectExited.AddListener(Soltar);
 
         if (siguienteBoton != null)
             siguienteBoton.enabled = false;
 
-        if (cubo != null)
+        if (cubo != null && cubo.sharedMesh != null)
         {
-            indice =
-                cubo.sharedMesh.GetBlendShapeIndex(
-                    blendShape
-                );
+            indice = cubo.sharedMesh.GetBlendShapeIndex(blendShape);
 
             if (indice < 0)
-                Debug.LogError(
-                    "No se encontró Blend Shape: " +
-                    blendShape
-                );
+                Debug.LogError("No se encontro el Blend Shape: " + blendShape);
         }
     }
 
-    private void LateUpdate()
+
+    private void Update()
     {
-        if (agarrado && mano != null)
+        if (seleccionado && mano != null)
         {
             ActualizarBoton();
         }
         else
         {
-            transform.localPosition =
-                Vector3.Lerp(
-                    transform.localPosition,
-                    posicionInicial,
-                    Time.deltaTime * velocidadRetorno
-                );
+            transform.position = Vector3.Lerp(
+                transform.position,
+                posicionInicial,
+                Time.deltaTime * velocidadRetorno
+            );
 
-            transform.localRotation =
-                Quaternion.Slerp(
-                    transform.localRotation,
-                    rotacionInicial,
-                    Time.deltaTime * velocidadRetorno
-                );
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                rotacionInicial,
+                Time.deltaTime * velocidadRetorno
+            );
         }
     }
+
 
     private void Agarrar(SelectEnterEventArgs args)
     {
@@ -96,94 +104,229 @@ public class BotonTransformar : MonoBehaviour
             return;
 
         mano = args.interactorObject.transform;
-        agarrado = true;
 
-        posicionManoInicial =
-            transform.parent.InverseTransformPoint(
-                mano.position
-            );
+        seleccionado = true;
+        presionado = false;
+        giroBloqueado = false;
 
-        direccionInicial =
-            Vector3.ProjectOnPlane(
-                mano.forward,
-                transform.parent.up
-            ).normalized;
+        tiempoBloqueado = 0f;
+
+        alturaManoInicial = mano.position.y;
     }
+
 
     private void ActualizarBoton()
     {
-        Vector3 actual =
-            transform.parent.InverseTransformPoint(
-                mano.position
+        if (!presionado)
+        {
+            float bajada =
+                alturaManoInicial -
+                mano.position.y;
+
+            bajada = Mathf.Clamp(
+                bajada,
+                0f,
+                recorridoPresion
             );
 
-        float presion =
-            posicionManoInicial.y -
-            actual.y;
+            transform.position =
+                posicionInicial +
+                Vector3.down * bajada;
 
-        presion = Mathf.Clamp(
-            presion,
-            0f,
-            distanciaPresion
-        );
+            transform.rotation =
+                rotacionInicial;
 
-        transform.localPosition =
+
+            if (bajada >= presionNecesaria)
+            {
+                presionado = true;
+
+                transform.position =
+                    posicionInicial +
+                    Vector3.down *
+                    recorridoPresion;
+
+                direccionGiroInicial =
+                    ObtenerDireccionHorizontal();
+
+                Debug.Log(
+                    "Boton 2 presionado. Giro desbloqueado."
+                );
+            }
+
+            return;
+        }
+
+
+        transform.position =
             posicionInicial +
-            Vector3.down * presion;
+            Vector3.down *
+            recorridoPresion;
+
+
+        if (giroBloqueado)
+        {
+            AplicarRotacionBloqueada();
+
+            tiempoBloqueado +=
+                Time.deltaTime;
+
+
+            if (
+                tiempoBloqueado >= tiempoBloqueadoNecesario &&
+                !activado
+            )
+            {
+                activado = true;
+
+                Debug.Log(
+                    "Boton 2 confirmado."
+                );
+
+                StartCoroutine(
+                    TransformarYFinalizar()
+                );
+            }
+
+            return;
+        }
 
 
         Vector3 direccionActual =
-            Vector3.ProjectOnPlane(
-                mano.forward,
-                transform.parent.up
-            ).normalized;
+            ObtenerDireccionHorizontal();
+
+
+        if (
+            direccionActual.sqrMagnitude < 0.01f ||
+            direccionGiroInicial.sqrMagnitude < 0.01f
+        )
+            return;
 
 
         float angulo =
             Vector3.SignedAngle(
-                direccionInicial,
+                direccionGiroInicial,
                 direccionActual,
-                transform.parent.up
-            );
-
-        angulo =
-            Mathf.Clamp(
-                angulo,
-                -giroMaximo,
-                giroMaximo
-            );
-
-
-        transform.localRotation =
-            rotacionInicial *
-            Quaternion.AngleAxis(
-                angulo,
                 Vector3.up
             );
 
 
-        if (
-            presion >= presionNecesaria &&
-            Mathf.Abs(angulo) >= giroNecesario &&
-            !activado
-        )
-        {
-            activado = true;
+        float giroPermitido;
 
-            StartCoroutine(Transformar());
+
+        if (giroHorario)
+        {
+            giroPermitido =
+                Mathf.Clamp(
+                    -angulo,
+                    0f,
+                    giroMaximo
+                );
+
+            transform.rotation =
+                Quaternion.AngleAxis(
+                    -giroPermitido,
+                    Vector3.up
+                ) *
+                rotacionInicial;
+        }
+        else
+        {
+            giroPermitido =
+                Mathf.Clamp(
+                    angulo,
+                    0f,
+                    giroMaximo
+                );
+
+            transform.rotation =
+                Quaternion.AngleAxis(
+                    giroPermitido,
+                    Vector3.up
+                ) *
+                rotacionInicial;
+        }
+
+
+        if (giroPermitido >= giroNecesario)
+        {
+            giroBloqueado = true;
+            tiempoBloqueado = 0f;
+
+            AplicarRotacionBloqueada();
+
+            Debug.Log(
+                "Giro bloqueado durante " +
+                tiempoBloqueadoNecesario +
+                " segundos."
+            );
         }
     }
 
-    private IEnumerator Transformar()
-    {
-        grab.enabled = false;
 
-        if (cubo != null && indice >= 0)
+    private void AplicarRotacionBloqueada()
+    {
+        if (giroHorario)
+        {
+            transform.rotation =
+                Quaternion.AngleAxis(
+                    -giroNecesario,
+                    Vector3.up
+                ) *
+                rotacionInicial;
+        }
+        else
+        {
+            transform.rotation =
+                Quaternion.AngleAxis(
+                    giroNecesario,
+                    Vector3.up
+                ) *
+                rotacionInicial;
+        }
+    }
+
+
+    private Vector3 ObtenerDireccionHorizontal()
+    {
+        Vector3 direccion =
+            mano.position -
+            transform.position;
+
+        direccion =
+            Vector3.ProjectOnPlane(
+                direccion,
+                Vector3.up
+            );
+
+
+        if (direccion.sqrMagnitude < 0.001f)
+        {
+            direccion =
+                Vector3.ProjectOnPlane(
+                    mano.forward,
+                    Vector3.up
+                );
+        }
+
+        return direccion.normalized;
+    }
+
+
+    private IEnumerator TransformarYFinalizar()
+    {
+        if (
+            cubo != null &&
+            indice >= 0
+        )
         {
             float inicio =
-                cubo.GetBlendShapeWeight(indice);
+                cubo.GetBlendShapeWeight(
+                    indice
+                );
 
             float tiempo = 0f;
+
 
             while (tiempo < duracion)
             {
@@ -201,6 +344,7 @@ public class BotonTransformar : MonoBehaviour
                         t
                     );
 
+
                 cubo.SetBlendShapeWeight(
                     indice,
                     Mathf.Lerp(
@@ -213,20 +357,33 @@ public class BotonTransformar : MonoBehaviour
                 yield return null;
             }
 
+
             cubo.SetBlendShapeWeight(
                 indice,
                 100f
             );
         }
 
+
         yield return Reproducir(voz8);
         yield return Reproducir(voz9);
 
+
         if (siguienteBoton != null)
             siguienteBoton.enabled = true;
+
+
+        while (seleccionado)
+            yield return null;
+
+
+        interactable.enabled = false;
     }
 
-    private IEnumerator Reproducir(AudioSource audio)
+
+    private IEnumerator Reproducir(
+        AudioSource audio
+    )
     {
         if (audio == null)
             yield break;
@@ -234,12 +391,25 @@ public class BotonTransformar : MonoBehaviour
         audio.Stop();
         audio.Play();
 
-        yield return new WaitWhile(() => audio.isPlaying);
+        yield return new WaitWhile(
+            () => audio.isPlaying
+        );
     }
 
-    private void Soltar(SelectExitEventArgs args)
+
+    private void Soltar(
+        SelectExitEventArgs args
+    )
     {
-        agarrado = false;
+        seleccionado = false;
         mano = null;
+
+
+        if (!activado)
+        {
+            presionado = false;
+            giroBloqueado = false;
+            tiempoBloqueado = 0f;
+        }
     }
 }
