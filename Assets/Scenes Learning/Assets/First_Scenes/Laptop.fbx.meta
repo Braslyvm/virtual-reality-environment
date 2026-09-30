@@ -3,7 +3,172 @@ guid: 89a7fdaf8c82e4042bc8c34f35910809
 ModelImporter:
   serializedVersion: 24300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop001
+    second: {fileID: 2100000, guid: 16c173a10cee3d04c807f6175b9abe2e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop002
+    second: {fileID: 2100000, guid: 469c3a6dbf855024fac24250e02d6832, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop003
+    second: {fileID: 2100000, guid: 40da4b44cbc483b4c9ba5c6723b8c594, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop004
+    second: {fileID: 2100000, guid: 3c8495607c21e0745a90aa0ae0edd294, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop005
+    second: {fileID: 2100000, guid: 2310b16f1d8b8d84aab673b147dd63fc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop006
+    second: {fileID: 2100000, guid: 0d2fbebe745af1e4ebea595466ad49c0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop007_SCREEN
+    second: {fileID: 2100000, guid: b89503f4de4131245b1cc13e5c3feb66, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop008
+    second: {fileID: 2100000, guid: 7d3b73b06e2738d469252c0666f85a60, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop009
+    second: {fileID: 2100000, guid: ff65e5aeab85eab4787b3aea94aeaede, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop010
+    second: {fileID: 2100000, guid: 796ac98e59e7c88428d978e7bbd64f69, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop011
+    second: {fileID: 2100000, guid: 53d58b252e8bd3d469aa826945cb1636, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop012
+    second: {fileID: 2100000, guid: 9d0a5a723dff6394389baa9af7370960, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop013
+    second: {fileID: 2100000, guid: ea89590afa59c1746ad65a3c1a503c28, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop014
+    second: {fileID: 2100000, guid: dc4794067e4e1d24386d2cc8abdfc549, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop015
+    second: {fileID: 2100000, guid: 47ffa03dca198074c8ee9d83ec3f4820, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop016
+    second: {fileID: 2100000, guid: 4fbb68dcd8741d247ae8e887510f19d6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop017
+    second: {fileID: 2100000, guid: e99928a3fa245a043897916f52470e3f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop018
+    second: {fileID: 2100000, guid: d4d10f27425c6144babf4ad91a554033, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop019
+    second: {fileID: 2100000, guid: c21c8545b960be648b868f13a3e8ded2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop020
+    second: {fileID: 2100000, guid: b9365b02c691fd848bd2340edfef8af2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop021
+    second: {fileID: 2100000, guid: 3efecf2caba696e44a7bce7417d97e54, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop022
+    second: {fileID: 2100000, guid: 22b8d458f39919148b209cf5a44b1127, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop023
+    second: {fileID: 2100000, guid: 85889a38cd73832439629c47a1ab0d09, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop024
+    second: {fileID: 2100000, guid: 07c6509be5b86cc4d9698fe2c387cda2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop025
+    second: {fileID: 2100000, guid: b74d18a91aa04544aa1a0097cae66363, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop026
+    second: {fileID: 2100000, guid: b0d63ca545c0dc54abb4928f44c33b27, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop027
+    second: {fileID: 2100000, guid: 554f18215fb239541a378db8dbde39af, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop028
+    second: {fileID: 2100000, guid: 468ae84033f21ce4d9fd6aa87bd3a7ba, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop029
+    second: {fileID: 2100000, guid: 86d482d1d5fe2e24aae06ff59fba9ce6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop030
+    second: {fileID: 2100000, guid: 714f310c1bc06ee4581b67740b07234d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop031
+    second: {fileID: 2100000, guid: 483a49f97c5091345b60c20a1bb884ed, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop032
+    second: {fileID: 2100000, guid: 95eeaa99b88317b48939998bed058782, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: laptop033
+    second: {fileID: 2100000, guid: 31930db57b532094c8228f4be93102eb, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
