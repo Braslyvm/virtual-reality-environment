@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using System.Collections;
 
@@ -12,6 +13,9 @@ public class TriggerCubos : MonoBehaviour
     public AudioSource audioSiguiente;
     public GameObject indicador2;
     public GameObject trigger2;
+
+    [Header("Sonido de logro")]
+    public AudioSource Logro;
 
     [Header("Configuración")]
     public float tolerancia = 0.15f;
@@ -34,7 +38,6 @@ public class TriggerCubos : MonoBehaviour
     IEnumerator EsperarConfirmacion()
     {
         comprobando = true;
-
 
         yield return new WaitForSeconds(tiempoEspera);
 
@@ -62,6 +65,7 @@ public class TriggerCubos : MonoBehaviour
             new Vector2(cuboGrande.position.x, cuboGrande.position.z),
             new Vector2(cuboMediano.position.x, cuboMediano.position.z)
         );
+
         float distanciaMedianoPequeno = Vector2.Distance(
             new Vector2(cuboMediano.position.x, cuboMediano.position.z),
             new Vector2(cuboPequeno.position.x, cuboPequeno.position.z)
@@ -82,14 +86,25 @@ public class TriggerCubos : MonoBehaviour
 
         Debug.Log("¡CUBOS APILADOS CORRECTAMENTE!");
 
+        // Reproducir sonido de logro
+        if (Logro != null)
+        {
+            Logro.Play();
+        }
+
+        // Reproducir audio del siguiente paso
         if (audioSiguiente != null)
         {
             audioSiguiente.Play();
         }
+
+        // Activar indicador
         if (indicador2 != null)
         {
             indicador2.SetActive(true);
         }
+
+        // Activar siguiente trigger
         if (trigger2 != null)
         {
             trigger2.SetActive(true);

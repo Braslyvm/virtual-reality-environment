@@ -1,3 +1,4 @@
+
 using System.Collections;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -28,12 +29,16 @@ public class BotonTransformar : MonoBehaviour
     [Header("Audio")]
     public AudioSource voz8;
     public AudioSource voz9;
+    public AudioSource Logro;
+
+    [Header("Indicadores")]
+    public GameObject indicadorActual;
+    public GameObject indicador2;
 
     [Header("Siguiente")]
     public XRSimpleInteractable siguienteBoton;
 
     private XRSimpleInteractable interactable;
-
     private Transform mano;
 
     private Vector3 posicionInicial;
@@ -42,7 +47,7 @@ public class BotonTransformar : MonoBehaviour
     private float alturaManoInicial;
     private Vector3 direccionGiroInicial;
 
-    private int indice;
+    private int indice = -1;
 
     private bool seleccionado;
     private bool presionado;
@@ -50,7 +55,6 @@ public class BotonTransformar : MonoBehaviour
     private bool activado;
 
     private float tiempoBloqueado;
-
 
     private void Awake()
     {
@@ -65,6 +69,9 @@ public class BotonTransformar : MonoBehaviour
         if (siguienteBoton != null)
             siguienteBoton.enabled = false;
 
+        if (indicador2 != null)
+            indicador2.SetActive(false);
+
         if (cubo != null && cubo.sharedMesh != null)
         {
             indice = cubo.sharedMesh.GetBlendShapeIndex(blendShape);
@@ -73,7 +80,6 @@ public class BotonTransformar : MonoBehaviour
                 Debug.LogError("No se encontro el Blend Shape: " + blendShape);
         }
     }
-
 
     private void Update()
     {
@@ -97,7 +103,6 @@ public class BotonTransformar : MonoBehaviour
         }
     }
 
-
     private void Agarrar(SelectEnterEventArgs args)
     {
         if (activado)
@@ -110,18 +115,15 @@ public class BotonTransformar : MonoBehaviour
         giroBloqueado = false;
 
         tiempoBloqueado = 0f;
-
         alturaManoInicial = mano.position.y;
     }
-
 
     private void ActualizarBoton()
     {
         if (!presionado)
         {
             float bajada =
-                alturaManoInicial -
-                mano.position.y;
+                alturaManoInicial - mano.position.y;
 
             bajada = Mathf.Clamp(
                 bajada,
@@ -130,12 +132,9 @@ public class BotonTransformar : MonoBehaviour
             );
 
             transform.position =
-                posicionInicial +
-                Vector3.down * bajada;
+                posicionInicial + Vector3.down * bajada;
 
-            transform.rotation =
-                rotacionInicial;
-
+            transform.rotation = rotacionInicial;
 
             if (bajada >= presionNecesaria)
             {
@@ -143,34 +142,26 @@ public class BotonTransformar : MonoBehaviour
 
                 transform.position =
                     posicionInicial +
-                    Vector3.down *
-                    recorridoPresion;
+                    Vector3.down * recorridoPresion;
 
                 direccionGiroInicial =
                     ObtenerDireccionHorizontal();
 
-                Debug.Log(
-                    "Boton 2 presionado. Giro desbloqueado."
-                );
+                Debug.Log("Boton 2 presionado. Giro desbloqueado.");
             }
 
             return;
         }
 
-
         transform.position =
             posicionInicial +
-            Vector3.down *
-            recorridoPresion;
-
+            Vector3.down * recorridoPresion;
 
         if (giroBloqueado)
         {
             AplicarRotacionBloqueada();
 
-            tiempoBloqueado +=
-                Time.deltaTime;
-
+            tiempoBloqueado += Time.deltaTime;
 
             if (
                 tiempoBloqueado >= tiempoBloqueadoNecesario &&
@@ -179,22 +170,16 @@ public class BotonTransformar : MonoBehaviour
             {
                 activado = true;
 
-                Debug.Log(
-                    "Boton 2 confirmado."
-                );
+                Debug.Log("Boton 2 confirmado.");
 
-                StartCoroutine(
-                    TransformarYFinalizar()
-                );
+                StartCoroutine(TransformarYFinalizar());
             }
 
             return;
         }
 
-
         Vector3 direccionActual =
             ObtenerDireccionHorizontal();
-
 
         if (
             direccionActual.sqrMagnitude < 0.01f ||
@@ -202,51 +187,42 @@ public class BotonTransformar : MonoBehaviour
         )
             return;
 
-
-        float angulo =
-            Vector3.SignedAngle(
-                direccionGiroInicial,
-                direccionActual,
-                Vector3.up
-            );
-
+        float angulo = Vector3.SignedAngle(
+            direccionGiroInicial,
+            direccionActual,
+            Vector3.up
+        );
 
         float giroPermitido;
 
-
         if (giroHorario)
         {
-            giroPermitido =
-                Mathf.Clamp(
-                    -angulo,
-                    0f,
-                    giroMaximo
-                );
+            giroPermitido = Mathf.Clamp(
+                -angulo,
+                0f,
+                giroMaximo
+            );
 
             transform.rotation =
                 Quaternion.AngleAxis(
                     -giroPermitido,
                     Vector3.up
-                ) *
-                rotacionInicial;
+                ) * rotacionInicial;
         }
         else
         {
-            giroPermitido =
-                Mathf.Clamp(
-                    angulo,
-                    0f,
-                    giroMaximo
-                );
+            giroPermitido = Mathf.Clamp(
+                angulo,
+                0f,
+                giroMaximo
+            );
 
             transform.rotation =
                 Quaternion.AngleAxis(
                     giroPermitido,
                     Vector3.up
-                ) *
-                rotacionInicial;
+                ) * rotacionInicial;
         }
-
 
         if (giroPermitido >= giroNecesario)
         {
@@ -263,7 +239,6 @@ public class BotonTransformar : MonoBehaviour
         }
     }
 
-
     private void AplicarRotacionBloqueada()
     {
         if (giroHorario)
@@ -272,8 +247,7 @@ public class BotonTransformar : MonoBehaviour
                 Quaternion.AngleAxis(
                     -giroNecesario,
                     Vector3.up
-                ) *
-                rotacionInicial;
+                ) * rotacionInicial;
         }
         else
         {
@@ -281,109 +255,93 @@ public class BotonTransformar : MonoBehaviour
                 Quaternion.AngleAxis(
                     giroNecesario,
                     Vector3.up
-                ) *
-                rotacionInicial;
+                ) * rotacionInicial;
         }
     }
-
 
     private Vector3 ObtenerDireccionHorizontal()
     {
         Vector3 direccion =
-            mano.position -
-            transform.position;
+            mano.position - transform.position;
 
-        direccion =
-            Vector3.ProjectOnPlane(
-                direccion,
-                Vector3.up
-            );
-
+        direccion = Vector3.ProjectOnPlane(
+            direccion,
+            Vector3.up
+        );
 
         if (direccion.sqrMagnitude < 0.001f)
         {
-            direccion =
-                Vector3.ProjectOnPlane(
-                    mano.forward,
-                    Vector3.up
-                );
+            direccion = Vector3.ProjectOnPlane(
+                mano.forward,
+                Vector3.up
+            );
         }
 
         return direccion.normalized;
     }
 
-
     private IEnumerator TransformarYFinalizar()
     {
-        if (
-            cubo != null &&
-            indice >= 0
-        )
+        if (cubo != null && indice >= 0)
         {
-            float inicio =
-                cubo.GetBlendShapeWeight(
-                    indice
-                );
-
+            float inicio = cubo.GetBlendShapeWeight(indice);
             float tiempo = 0f;
-
 
             while (tiempo < duracion)
             {
                 tiempo += Time.deltaTime;
 
-                float t =
-                    Mathf.Clamp01(
-                        tiempo / duracion
-                    );
+                float t = Mathf.Clamp01(
+                    tiempo / duracion
+                );
 
-                float suave =
-                    Mathf.SmoothStep(
-                        0f,
-                        1f,
-                        t
-                    );
-
+                float suave = Mathf.SmoothStep(
+                    0f,
+                    1f,
+                    t
+                );
 
                 cubo.SetBlendShapeWeight(
                     indice,
-                    Mathf.Lerp(
-                        inicio,
-                        100f,
-                        suave
-                    )
+                    Mathf.Lerp(inicio, 100f, suave)
                 );
 
                 yield return null;
             }
 
-
-            cubo.SetBlendShapeWeight(
-                indice,
-                100f
-            );
+            cubo.SetBlendShapeWeight(indice, 100f);
         }
 
+        if (Logro != null)
+        {
+            Logro.Play();
+        }
+
+        if (indicadorActual != null)
+        {
+            indicadorActual.SetActive(false);
+        }
+
+        if (indicador2 != null)
+        {
+            indicador2.SetActive(true);
+        }
 
         yield return Reproducir(voz8);
         yield return Reproducir(voz9);
 
-
         if (siguienteBoton != null)
+        {
             siguienteBoton.enabled = true;
-
+        }
 
         while (seleccionado)
             yield return null;
 
-
         interactable.enabled = false;
     }
 
-
-    private IEnumerator Reproducir(
-        AudioSource audio
-    )
+    private IEnumerator Reproducir(AudioSource audio)
     {
         if (audio == null)
             yield break;
@@ -396,14 +354,10 @@ public class BotonTransformar : MonoBehaviour
         );
     }
 
-
-    private void Soltar(
-        SelectExitEventArgs args
-    )
+    private void Soltar(SelectExitEventArgs args)
     {
         seleccionado = false;
         mano = null;
-
 
         if (!activado)
         {

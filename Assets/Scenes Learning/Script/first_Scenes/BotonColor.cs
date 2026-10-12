@@ -1,3 +1,4 @@
+
 using System.Collections;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -27,12 +28,16 @@ public class BotonColor : MonoBehaviour
     [Header("Audio")]
     public AudioSource voz6;
     public AudioSource voz7;
+    public AudioSource Logro;
+
+    [Header("Indicadores")]
+    public GameObject indicadorActual;
+    public GameObject indicador2;
 
     [Header("Siguiente")]
     public XRSimpleInteractable siguienteBoton;
 
     private XRSimpleInteractable interactable;
-
     private Transform mano;
 
     private Vector3 posicionInicial;
@@ -48,7 +53,6 @@ public class BotonColor : MonoBehaviour
 
     private float tiempoBloqueado;
 
-
     private void Awake()
     {
         interactable = GetComponent<XRSimpleInteractable>();
@@ -61,8 +65,10 @@ public class BotonColor : MonoBehaviour
 
         if (siguienteBoton != null)
             siguienteBoton.enabled = false;
-    }
 
+        if (indicador2 != null)
+            indicador2.SetActive(false);
+    }
 
     private void Update()
     {
@@ -86,7 +92,6 @@ public class BotonColor : MonoBehaviour
         }
     }
 
-
     private void Agarrar(SelectEnterEventArgs args)
     {
         if (activado)
@@ -99,19 +104,15 @@ public class BotonColor : MonoBehaviour
         giroBloqueado = false;
 
         tiempoBloqueado = 0f;
-
         alturaManoInicial = mano.position.y;
     }
 
-
     private void ActualizarBoton()
     {
-        // PRIMERO: PRESIONAR
         if (!presionado)
         {
             float bajada =
-                alturaManoInicial -
-                mano.position.y;
+                alturaManoInicial - mano.position.y;
 
             bajada = Mathf.Clamp(
                 bajada,
@@ -120,10 +121,8 @@ public class BotonColor : MonoBehaviour
             );
 
             transform.position =
-                posicionInicial +
-                Vector3.down * bajada;
+                posicionInicial + Vector3.down * bajada;
 
-            // Antes de presionar completamente NO puede girar
             transform.rotation = rotacionInicial;
 
             if (bajada >= presionNecesaria)
@@ -132,29 +131,21 @@ public class BotonColor : MonoBehaviour
 
                 transform.position =
                     posicionInicial +
-                    Vector3.down *
-                    recorridoPresion;
+                    Vector3.down * recorridoPresion;
 
                 direccionGiroInicial =
                     ObtenerDireccionHorizontal();
 
-                Debug.Log(
-                    "Boton presionado. Giro desbloqueado."
-                );
+                Debug.Log("Boton presionado. Giro desbloqueado.");
             }
 
             return;
         }
 
-
-        // Mantener botón abajo
         transform.position =
             posicionInicial +
-            Vector3.down *
-            recorridoPresion;
+            Vector3.down * recorridoPresion;
 
-
-        // GIRO YA BLOQUEADO
         if (giroBloqueado)
         {
             AplicarRotacionBloqueada();
@@ -170,19 +161,14 @@ public class BotonColor : MonoBehaviour
 
                 CambiarTodoAAmarillo();
 
-                StartCoroutine(
-                    Finalizar()
-                );
+                StartCoroutine(Finalizar());
             }
 
             return;
         }
 
-
-        // SEGUNDO: GIRAR
         Vector3 direccionActual =
             ObtenerDireccionHorizontal();
-
 
         if (
             direccionActual.sqrMagnitude < 0.01f ||
@@ -190,51 +176,42 @@ public class BotonColor : MonoBehaviour
         )
             return;
 
-
-        float angulo =
-            Vector3.SignedAngle(
-                direccionGiroInicial,
-                direccionActual,
-                Vector3.up
-            );
-
+        float angulo = Vector3.SignedAngle(
+            direccionGiroInicial,
+            direccionActual,
+            Vector3.up
+        );
 
         float giroPermitido;
 
-
         if (giroHorario)
         {
-            giroPermitido =
-                Mathf.Clamp(
-                    -angulo,
-                    0f,
-                    giroMaximo
-                );
+            giroPermitido = Mathf.Clamp(
+                -angulo,
+                0f,
+                giroMaximo
+            );
 
             transform.rotation =
                 Quaternion.AngleAxis(
                     -giroPermitido,
                     Vector3.up
-                ) *
-                rotacionInicial;
+                ) * rotacionInicial;
         }
         else
         {
-            giroPermitido =
-                Mathf.Clamp(
-                    angulo,
-                    0f,
-                    giroMaximo
-                );
+            giroPermitido = Mathf.Clamp(
+                angulo,
+                0f,
+                giroMaximo
+            );
 
             transform.rotation =
                 Quaternion.AngleAxis(
                     giroPermitido,
                     Vector3.up
-                ) *
-                rotacionInicial;
+                ) * rotacionInicial;
         }
-
 
         if (giroPermitido >= giroNecesario)
         {
@@ -243,14 +220,9 @@ public class BotonColor : MonoBehaviour
 
             AplicarRotacionBloqueada();
 
-            Debug.Log(
-                "Giro completado. Esperando "
-                + tiempoBloqueadoNecesario +
-                " segundos."
-            );
+            Debug.Log("Giro completado.");
         }
     }
-
 
     private void AplicarRotacionBloqueada()
     {
@@ -260,8 +232,7 @@ public class BotonColor : MonoBehaviour
                 Quaternion.AngleAxis(
                     -giroNecesario,
                     Vector3.up
-                ) *
-                rotacionInicial;
+                ) * rotacionInicial;
         }
         else
         {
@@ -269,103 +240,90 @@ public class BotonColor : MonoBehaviour
                 Quaternion.AngleAxis(
                     giroNecesario,
                     Vector3.up
-                ) *
-                rotacionInicial;
+                ) * rotacionInicial;
         }
     }
-
 
     private Vector3 ObtenerDireccionHorizontal()
     {
         Vector3 direccion =
-            mano.position -
-            transform.position;
+            mano.position - transform.position;
 
-        direccion =
-            Vector3.ProjectOnPlane(
-                direccion,
-                Vector3.up
-            );
+        direccion = Vector3.ProjectOnPlane(
+            direccion,
+            Vector3.up
+        );
 
         if (direccion.sqrMagnitude < 0.001f)
         {
-            direccion =
-                Vector3.ProjectOnPlane(
-                    mano.forward,
-                    Vector3.up
-                );
+            direccion = Vector3.ProjectOnPlane(
+                mano.forward,
+                Vector3.up
+            );
         }
 
         return direccion.normalized;
     }
 
-
-    // CAMBIA TODOS LOS MATERIALES DEL CUBO A AMARILLO
     private void CambiarTodoAAmarillo()
     {
         if (cuboRenderer == null)
         {
-            Debug.LogError(
-                "No se asigno Cubo Renderer."
-            );
-
+            Debug.LogError("No se asigno Cubo Renderer.");
             return;
         }
-
 
         if (materialAmarillo == null)
         {
-            Debug.LogError(
-                "No se asigno Mat_Amarillo."
-            );
-
+            Debug.LogError("No se asigno Mat_Amarillo.");
             return;
         }
 
-
-        Material[] materiales =
-            cuboRenderer.sharedMaterials;
-
+        Material[] materiales = cuboRenderer.sharedMaterials;
 
         for (int i = 0; i < materiales.Length; i++)
         {
-            materiales[i] =
-                materialAmarillo;
+            materiales[i] = materialAmarillo;
         }
 
+        cuboRenderer.sharedMaterials = materiales;
 
-        cuboRenderer.sharedMaterials =
-            materiales;
-
-
-        Debug.Log(
-            "Todo el cubo ahora es amarillo."
-        );
+        Debug.Log("Todo el cubo ahora es amarillo.");
     }
-
 
     private IEnumerator Finalizar()
     {
+        if (Logro != null)
+        {
+            Logro.Play();
+        }
+
+        if (indicadorActual != null)
+        {
+            indicadorActual.SetActive(false);
+        }
+
+        if (indicador2 != null)
+        {
+            indicador2.SetActive(true);
+        }
+
         yield return Reproducir(voz6);
 
         yield return Reproducir(voz7);
 
-
         if (siguienteBoton != null)
+        {
             siguienteBoton.enabled = true;
-
+        }
 
         while (seleccionado)
             yield return null;
 
-
         interactable.enabled = false;
     }
 
-
-    private IEnumerator Reproducir(
-        AudioSource audio
-    )
+    private IEnumerator Reproducir(AudioSource audio)
     {
         if (audio == null)
             yield break;
@@ -378,14 +336,10 @@ public class BotonColor : MonoBehaviour
         );
     }
 
-
-    private void Soltar(
-        SelectExitEventArgs args
-    )
+    private void Soltar(SelectExitEventArgs args)
     {
         seleccionado = false;
         mano = null;
-
 
         if (!activado)
         {

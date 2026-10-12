@@ -7,6 +7,7 @@ public class InicioPruebaBotones : MonoBehaviour
     [Header("Objetos a desactivar")]
     public GameObject glow;
     public GameObject trigger;
+    public GameObject glow2;
 
     [Header("Audios")]
     public AudioSource voz4;
@@ -57,6 +58,7 @@ public class InicioPruebaBotones : MonoBehaviour
         if (trigger != null)
         {
             trigger.SetActive(false);
+            glow2.SetActive(true);
             Debug.Log("Trigger desactivado.");
         }
     }
