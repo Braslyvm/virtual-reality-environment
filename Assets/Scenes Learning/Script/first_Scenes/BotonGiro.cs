@@ -26,6 +26,7 @@ public class BotonGiro : MonoBehaviour
 
     [Header("Audio")]
     public AudioSource voz10;
+    public AudioSource voz11;
 
     private XRSimpleInteractable interactable;
 
@@ -381,6 +382,13 @@ public class BotonGiro : MonoBehaviour
         yield return Reproducir(
             voz10
         );
+        yield return new WaitForSeconds(0.5f);
+
+        yield return Reproducir(
+            voz11
+        );
+
+
 
         interactable.enabled = false;
     }

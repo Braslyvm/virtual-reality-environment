@@ -8,17 +8,17 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Mesa_Acero_Gris
-    second: {fileID: 2100000, guid: 99708dca5b34fd649b813244284cd341, type: 2}
+    second: {fileID: 2100000, guid: 745a3097c45490d47bb839d16ca8ed98, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Mesa_Acero_Negro
-    second: {fileID: 2100000, guid: 59d1504cb9517fb4eb042302634d1cb2, type: 2}
+    second: {fileID: 2100000, guid: 745a3097c45490d47bb839d16ca8ed98, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Mesa_Detalles_Amarillos
-    second: {fileID: 2100000, guid: 69a189f15af03ce4fac2ea3afdd9d6d0, type: 2}
+    second: {fileID: 2100000, guid: 745a3097c45490d47bb839d16ca8ed98, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -28,7 +28,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Mesa_Madera
-    second: {fileID: 2100000, guid: f2c89c54e8ddcc74381700c878f6a98f, type: 2}
+    second: {fileID: 2100000, guid: fcee2ccb758aa7646ae0c59a49ce4314, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
