@@ -3,7 +3,107 @@ guid: 42753e27e9e17a2449fcdbf08f74fcac
 ModelImporter:
   serializedVersion: 24300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Aluminio
+    second: {fileID: 2100000, guid: 96784f13be7ee914d860d8159a3e71c5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_CieloRaso_Loseta
+    second: {fileID: 2100000, guid: 70df19fc019f7d64786e4111a7b1af66, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Corcho
+    second: {fileID: 2100000, guid: 44b6e937a62b9764f8d248becbc880a0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Difusor_Aire
+    second: {fileID: 2100000, guid: c2526646e2904f24c8e872cae8dc83fd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Ducto_Oscuro
+    second: {fileID: 2100000, guid: e2ca30701d3a04b449b04b6d46ab48e4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Fragua
+    second: {fileID: 2100000, guid: e0be741ee54cf9a40b28f843e84966f7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Lampara_Reflector
+    second: {fileID: 2100000, guid: c2526646e2904f24c8e872cae8dc83fd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Lampara_Rejilla
+    second: {fileID: 2100000, guid: 96784f13be7ee914d860d8159a3e71c5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Lampara_Tubo
+    second: {fileID: 2100000, guid: c2526646e2904f24c8e872cae8dc83fd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Losa_Plenum
+    second: {fileID: 2100000, guid: e0be741ee54cf9a40b28f843e84966f7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Pared_Azul
+    second: {fileID: 2100000, guid: 892f0a4539c48e84bbe30f5cc21a79a3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Pared_Crema
+    second: {fileID: 2100000, guid: 670b134608b5039408aa8767ae33601f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Perfileria_Blanca
+    second: {fileID: 2100000, guid: c2526646e2904f24c8e872cae8dc83fd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Piso_Porcelanato
+    second: {fileID: 2100000, guid: 419f29f4a33fde9449b0e430ff09a3a9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Pizarra_Blanca
+    second: {fileID: 2100000, guid: 19e9ab6adc5cee4408504b1f8f542944, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Rotulo_Fondo
+    second: {fileID: 2100000, guid: c2526646e2904f24c8e872cae8dc83fd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Rotulo_Letras
+    second: {fileID: 2100000, guid: 2682f8ce9aa9e654abf6f9a8c4503809, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Vidrio
+    second: {fileID: 2100000, guid: 4a7a74b92736ee44f85a07931918bfc4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Vidrio_Esmerilado
+    second: {fileID: 2100000, guid: dd582780e13655647b8f860bc4448fed, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Zocalo_Madera
+    second: {fileID: 2100000, guid: 04f0eb70d7c1fec41a6abf213bb51627, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

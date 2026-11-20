@@ -8617,9 +8617,9 @@ MonoBehaviour:
   botonReiniciar: {fileID: 1911133476}
   textoSiguiente: {fileID: 1911133475}
   textoReiniciar: {fileID: 1911133474}
-  escenaSiguiente: {fileID: 102900000, guid: 55daccc09a3b69647bbab145b54a3ab3, type: 3}
+  escenaSiguiente: {fileID: 102900000, guid: 12a815e3d5da1d142887f60d24a87f5c, type: 3}
   escenaReiniciar: {fileID: 102900000, guid: 55daccc09a3b69647bbab145b54a3ab3, type: 3}
-  rutaSiguiente: Assets/Scenes/Learning.unity
+  rutaSiguiente: Assets/Scenes/Lab 1.unity
   rutaReiniciar: Assets/Scenes/Learning.unity
   Logro: {fileID: 776418743}
   esperaDespuesAudio: 0.3
