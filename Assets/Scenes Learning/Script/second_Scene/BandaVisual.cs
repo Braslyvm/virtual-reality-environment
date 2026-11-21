@@ -42,12 +42,12 @@ public class BandaVisual : MonoBehaviour
         }
     }
 
+    // Anima la textura y los rodillos mientras la banda está en movimiento.
     private void Update()
     {
         if (gestor == null || !gestor.BandaEnMovimiento)
             return;
 
-        // Animacion de textura.
         if (materialBanda != null &&
             !string.IsNullOrEmpty(propiedadTextura))
         {
@@ -62,7 +62,6 @@ public class BandaVisual : MonoBehaviour
             );
         }
 
-        // Animacion de rodillos.
         if (rodillos != null)
         {
             foreach (Transform rodillo in rodillos)

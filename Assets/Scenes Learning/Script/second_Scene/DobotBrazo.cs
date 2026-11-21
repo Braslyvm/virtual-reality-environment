@@ -29,7 +29,6 @@ public class DobotBrazo : MonoBehaviour
 
     public float anguloApertura = 25f;
 
-    // La pinza ya no cierra completamente a cero.
     public float anguloCierre = 12f;
 
     public float duracionPinza = 0.7f;
@@ -132,7 +131,7 @@ public class DobotBrazo : MonoBehaviour
         AbrirPinza(true);
     }
 
-    // DIBUJAR UNA GUIA DEL TAMANO DEL CUBO
+    // Dibuja una guía del tamaño del cubo en el punto de agarre.
     private void OnDrawGizmosSelected()
     {
         if (puntoAgarre == null)
@@ -156,7 +155,7 @@ public class DobotBrazo : MonoBehaviour
         Gizmos.matrix = matrizAnterior;
     }
 
-    // MANTENER EL CUBO SUJETO A LA PINZA
+    // Mantiene el cubo sujeto y alineado con la pinza.
     private void LateUpdate()
     {
         if (!mantenerCuboAlineado ||
@@ -191,7 +190,7 @@ public class DobotBrazo : MonoBehaviour
         }
     }
 
-    // SECUENCIA PRINCIPAL
+    // Recoge el cubo detectado y lo deposita en la caja de clasificación.
     public IEnumerator RecogerYDepositar(CuboEnBanda cubo)
     {
         UltimaRecogidaExitosa = false;
@@ -202,10 +201,8 @@ public class DobotBrazo : MonoBehaviour
 
         Debug.Log("DOBOT iniciando clasificacion.");
 
-        // 1. ABRIR COMPLETAMENTE LOS DEDOS
         yield return AnimarPinza(true, duracionPinza);
 
-        // 2. GIRAR HACIA EL SENSOR
         yield return MoverHasta(sobreSensor);
 
         if (cubo == null)
@@ -213,7 +210,6 @@ public class DobotBrazo : MonoBehaviour
 
         if (usarAjusteAutomatico)
         {
-            // 3. POSICIONARSE PRIMERO SOBRE EL CUBO
             Vector3 posicionSuperior =
                 cubo.transform.position +
                 Vector3.up * alturaPreAgarre;
@@ -226,7 +222,6 @@ public class DobotBrazo : MonoBehaviour
             if (cubo == null)
                 yield break;
 
-            // 4. BAJAR HACIA EL CENTRO DEL CUBO
             yield return AjustarPinzaHasta(
                 cubo.transform.position,
                 distanciaMaximaAgarre
@@ -234,7 +229,6 @@ public class DobotBrazo : MonoBehaviour
         }
         else
         {
-            // MODO MANUAL CON POSTURAS
             yield return MoverHasta(
                 tomar,
                 duracionAproximacion
@@ -244,7 +238,6 @@ public class DobotBrazo : MonoBehaviour
         if (cubo == null)
             yield break;
 
-        // 5. VERIFICAR QUE LLEGO CORRECTAMENTE
         float distanciaAgarre = Vector3.Distance(
             puntoAgarre.position,
             cubo.transform.position
@@ -261,18 +254,15 @@ public class DobotBrazo : MonoBehaviour
             yield break;
         }
 
-        // 6. MANTENER LA PINZA ABIERTA UN MOMENTO
         yield return new WaitForSeconds(
             Mathf.Max(0f, pausaAntesCerrar)
         );
 
-        // 7. CERRAR SIN APLASTAR EL CUBO
         yield return AnimarPinza(false, duracionPinza);
 
         if (cubo == null)
             yield break;
 
-        // 8. SUJETAR EL CUBO
         cubo.PegarAPinza(puntoAgarre);
 
         cuboEnPinza = cubo;
@@ -293,19 +283,15 @@ public class DobotBrazo : MonoBehaviour
             Mathf.Max(0f, pausaAgarre)
         );
 
-        // 9. LEVANTAR EL CUBO
         yield return MoverHasta(sobreSensor);
 
-        // 10. GIRAR HACIA LA ZONA DE ENTREGA
         yield return MoverHasta(sobreCaja);
 
-        // 11. BAJAR LENTAMENTE
         yield return MoverHasta(
             entregar,
             duracionAproximacion
         );
 
-        // 12. AJUSTAR PUNTO DE ENTREGA
         if (usarAjusteAutomatico)
         {
             yield return AjustarPinzaHasta(
@@ -328,7 +314,6 @@ public class DobotBrazo : MonoBehaviour
             );
         }
 
-        // 13. ABRIR LOS DEDOS SUAVEMENTE
         yield return AnimarPinza(true, duracionPinza);
 
         if (cubo == null)
@@ -337,7 +322,6 @@ public class DobotBrazo : MonoBehaviour
             yield break;
         }
 
-        // 14. SOLTAR DESDE LA POSICION REAL
         cuboEnPinza = null;
 
         cubo.SoltarEn(puntoAgarre);
@@ -358,14 +342,12 @@ public class DobotBrazo : MonoBehaviour
 
         yield return new WaitForSeconds(0.3f);
 
-        // 15. LEVANTAR EL BRAZO
         yield return MoverHasta(sobreCaja);
 
-        // 16. REGRESAR A REPOSO
         yield return MoverHasta(reposo);
     }
 
-    // AJUSTE AUTOMATICO DE LA PINZA
+    // Ajusta las articulaciones hasta situar la pinza sobre el objetivo.
     private IEnumerator AjustarPinzaHasta(
         Vector3 objetivo,
         float tolerancia)
@@ -436,7 +418,7 @@ public class DobotBrazo : MonoBehaviour
         );
     }
 
-    // CORREGIR UNA ARTICULACION
+    // Corrige progresivamente el ángulo de una articulación hacia el objetivo.
     private void AjustarArticulacion(
         Transform articulacion,
         Quaternion rotacionInicial,
@@ -521,7 +503,7 @@ public class DobotBrazo : MonoBehaviour
             );
     }
 
-    // APLICAR POSTURA
+    // Aplica una postura a las cuatro articulaciones del brazo.
     private void AplicarPostura(Vector4 postura)
     {
         j1.localRotation = CalcularRotacion(
@@ -546,7 +528,7 @@ public class DobotBrazo : MonoBehaviour
         anguloActualJ4 = postura.w;
     }
 
-    // MOVIMIENTO SUAVE
+    // Mueve el brazo suavemente hasta la postura indicada.
     private IEnumerator MoverHasta(
         Vector4 postura,
         float duracion = -1f)
@@ -621,7 +603,7 @@ public class DobotBrazo : MonoBehaviour
         AplicarPostura(postura);
     }
 
-    // APERTURA INMEDIATA
+    // Establece de forma inmediata la apertura de los dedos.
     private void AbrirPinza(bool abierta)
     {
         Vector3 eje =
@@ -659,7 +641,7 @@ public class DobotBrazo : MonoBehaviour
         }
     }
 
-    // ANIMACION DE LOS DEDOS
+    // Anima suavemente la apertura o el cierre de los dedos.
     private IEnumerator AnimarPinza(
         bool abierta,
         float duracion)

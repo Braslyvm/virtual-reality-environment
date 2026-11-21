@@ -22,6 +22,7 @@ public class start_labnn : MonoBehaviour
         StartCoroutine(IniciarProceso());
     }
 
+    // Reproduce la narración inicial y activa los glows y triggers de las estaciones.
     private IEnumerator IniciarProceso()
     {
         if (activado)
@@ -33,7 +34,6 @@ public class start_labnn : MonoBehaviour
 
         yield return new WaitForSeconds(delay);
 
-        // INICIAR AUDIO
         if (audioSource != null)
         {
             if (audioSource.clip != null)
@@ -51,14 +51,12 @@ public class start_labnn : MonoBehaviour
             Debug.LogError("No se asigno el AudioSource");
         }
 
-        // ACTIVAR GLOWS
         if (glow1 != null)
             glow1.SetActive(true);
 
         if (glow2 != null)
             glow2.SetActive(true);
 
-        // ACTIVAR TRIGGERS
         if (trigger1 != null)
             trigger1.SetActive(true);
 

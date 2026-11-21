@@ -29,12 +29,11 @@ public class BotonEstacionVR : MonoBehaviour
     private bool habilitado;
     private bool presionado = false;
 
+    // Configura el estado inicial del botón según su tipo.
     private void Awake()
     {
         colliderBoton = GetComponent<Collider>();
 
-        // El boton rojo lo habilitara TriggerAudio2.
-        // El boton verde inicia deshabilitado.
         habilitado = tipoBoton == TipoBotonEstacion.Rojo;
 
         if (!habilitado)

@@ -35,9 +35,9 @@ public class CuboEsferaController : MonoBehaviour
         }
     }
 
+    // Inicia automáticamente el ciclo de transformación.
     void Start()
     {
-        // Comienza automáticamente el ciclo
         StartCoroutine(CicloAutomatico());
     }
 
@@ -45,20 +45,16 @@ public class CuboEsferaController : MonoBehaviour
     {
         while (true)
         {
-            // Cubo → Esfera
             yield return StartCoroutine(Animar(100f));
 
             EsEsfera = true;
 
-            // Espera siendo esfera
             yield return new WaitForSeconds(espera);
 
-            // Esfera → Cubo
             yield return StartCoroutine(Animar(0f));
 
             EsEsfera = false;
 
-            // Espera siendo cubo
             yield return new WaitForSeconds(espera);
         }
     }

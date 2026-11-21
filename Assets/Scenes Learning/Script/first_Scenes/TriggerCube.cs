@@ -17,7 +17,7 @@ public class TriggerCubos : MonoBehaviour
     [Header("Sonido de logro")]
     public AudioSource Logro;
 
-    [Header("Configuración")]
+    [Header("Configuraciï¿½n")]
     public float tolerancia = 0.15f;
     public float tiempoEspera = 2f;
 
@@ -47,7 +47,7 @@ public class TriggerCubos : MonoBehaviour
         }
         else
         {
-            Debug.Log("La pila se movió o se cayó. Volviendo a comprobar.");
+            Debug.Log("La pila se moviï¿½ o se cayï¿½. Volviendo a comprobar.");
         }
 
         comprobando = false;
@@ -80,31 +80,28 @@ public class TriggerCubos : MonoBehaviour
                alineados;
     }
 
+    // Reproduce los sonidos y activa el indicador y trigger del siguiente paso.
     void ActivarSiguientePaso()
     {
         completado = true;
 
-        Debug.Log("¡CUBOS APILADOS CORRECTAMENTE!");
+        Debug.Log("ï¿½CUBOS APILADOS CORRECTAMENTE!");
 
-        // Reproducir sonido de logro
         if (Logro != null)
         {
             Logro.Play();
         }
 
-        // Reproducir audio del siguiente paso
         if (audioSiguiente != null)
         {
             audioSiguiente.Play();
         }
 
-        // Activar indicador
         if (indicador2 != null)
         {
             indicador2.SetActive(true);
         }
 
-        // Activar siguiente trigger
         if (trigger2 != null)
         {
             trigger2.SetActive(true);

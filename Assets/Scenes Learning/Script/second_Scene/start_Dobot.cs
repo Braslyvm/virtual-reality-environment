@@ -30,9 +30,9 @@ public class start_Dobot : MonoBehaviour
 
     private Collider colliderBotonRojo;
 
+    // Desactiva y oculta inicialmente el botón rojo de la banda.
     private void Awake()
     {
-        // Desactivar inicialmente la interaccion del boton rojo.
         if (botonRojo != null)
         {
             colliderBotonRojo =
@@ -49,21 +49,18 @@ public class start_Dobot : MonoBehaviour
             interactuableXR.enabled = false;
         }
 
-        // Ocultar el Glow del boton rojo.
         OcultarGlow(glowBotonRojo);
     }
 
+    // Inicia las narraciones y habilita el botón rojo cuando entra el jugador XR.
     private void OnTriggerEnter(Collider other)
     {
-        // Solo ejecutar una vez.
         if (activado)
             return;
 
-        // Verificar que sea el jugador XR.
         if (other.transform.root.name != "XR Origin Hands (XR Rig)")
             return;
 
-        // Buscar un controlador activo para ejecutar las voces.
         MonoBehaviour ejecutor = null;
 
         if (gestorCorrutinas != null &&
@@ -88,22 +85,17 @@ public class start_Dobot : MonoBehaviour
 
         Debug.Log("Jugador entro por primera vez a ZonaInicio_3.");
 
-        // Ocultar los Glows anteriores.
         OcultarGlow(glow);
         OcultarGlow(otroGlow);
 
-        // No desactivar el Trigger.
-        // No desactivar su Collider.
 
         ejecutor.StartCoroutine(
             ReproducirNarracionesEstacion3()
         );
     }
 
-    // ==========================================
-    // OCULTAR GLOWS
-    // ==========================================
 
+    // Oculta los renderizadores y las luces del objeto indicado.
     private void OcultarGlow(GameObject objeto)
     {
         if (objeto == null)
@@ -126,10 +118,8 @@ public class start_Dobot : MonoBehaviour
         }
     }
 
-    // ==========================================
-    // MOSTRAR GLOW
-    // ==========================================
 
+    // Muestra los renderizadores y las luces del objeto indicado.
     private void MostrarGlow(GameObject objeto)
     {
         if (objeto == null)
@@ -154,13 +144,10 @@ public class start_Dobot : MonoBehaviour
         }
     }
 
-    // ==========================================
-    // REPRODUCIR VOCES
-    // ==========================================
 
+    // Reproduce las dos voces de la estación 3 y habilita el botón rojo.
     private IEnumerator ReproducirNarracionesEstacion3()
     {
-        // VOZ ESTACION 3 #1
         if (audioSource != null)
         {
             Debug.Log("Reproduciendo Voz Estacion 3 #1");
@@ -179,7 +166,6 @@ public class start_Dobot : MonoBehaviour
             );
         }
 
-        // VOZ ESTACION 3 #2
         if (voz2 != null)
         {
             Debug.Log("Reproduciendo Voz Estacion 3 #2");
@@ -198,14 +184,11 @@ public class start_Dobot : MonoBehaviour
             );
         }
 
-        // Habilitar el boton rojo.
         ActivarBotonBanda();
     }
 
-    // ==========================================
-    // HABILITAR BOTON ROJO
-    // ==========================================
 
+    // Habilita el botón rojo de la banda y muestra su glow.
     private void ActivarBotonBanda()
     {
         if (botonRojo != null)

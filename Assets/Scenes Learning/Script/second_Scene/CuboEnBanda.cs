@@ -44,16 +44,15 @@ public class CuboEnBanda : MonoBehaviour
         ConfigurarMovimientoControlado();
     }
 
+    // Configura el Rigidbody para un movimiento controlado sin físicas externas.
     private void ConfigurarMovimientoControlado()
     {
-        // Eliminar cualquier velocidad inicial.
         if (!rb.isKinematic)
         {
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
         }
 
-        // Evitar impulsos producidos por colisiones.
         rb.collisionDetectionMode =
             CollisionDetectionMode.ContinuousSpeculative;
 
@@ -63,6 +62,7 @@ public class CuboEnBanda : MonoBehaviour
         rb.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
+    // Configura el cubo con su gestor, tipo, destino, velocidad y color.
     public void Inicializar(
         GestorEstacion3 nuevoGestor,
         TipoCubo nuevoTipo,
@@ -86,7 +86,6 @@ public class CuboEnBanda : MonoBehaviour
         direccion.y = 0f;
         direccion.Normalize();
 
-        // ASIGNAR COLOR
         Renderer renderizador =
             GetComponentInChildren<Renderer>();
 
@@ -113,28 +112,27 @@ public class CuboEnBanda : MonoBehaviour
         );
     }
 
+    // Controla la caída hasta la banda y el transporte hasta el destino.
     private void FixedUpdate()
     {
         if (gestor == null || destino == null || finalizado)
             return;
 
-        // PRIMERA ETAPA: CAIDA VERTICAL
         if (cayendo)
         {
             CaerHaciaBanda();
             return;
         }
 
-        // SEGUNDA ETAPA: TRANSPORTE
         if (EstaEnBanda)
         {
             MoverSobreBanda();
         }
     }
 
+    // Hace caer el cubo hasta detectar la superficie de la banda.
     private void CaerHaciaBanda()
     {
-        // Aumentar progresivamente la velocidad de caida.
         velocidadCaida += gravedadCaida * Time.fixedDeltaTime;
 
         float desplazamiento =
@@ -143,10 +141,8 @@ public class CuboEnBanda : MonoBehaviour
         Vector3 nuevaPosicion =
             rb.position + Vector3.down * desplazamiento;
 
-        // Calcular la mitad de la altura del cubo.
         float mitadAltura = colision.bounds.extents.y;
 
-        // Buscar la superficie de la banda debajo del cubo.
         Vector3 origenRayo =
             rb.position + Vector3.up * (mitadAltura + 0.02f);
 
@@ -180,7 +176,6 @@ public class CuboEnBanda : MonoBehaviour
             }
         }
 
-        // COMPROBAR SI EL CUBO LLEGO A LA BANDA
         if (encontroBanda &&
             nuevaPosicion.y - mitadAltura <= alturaBanda)
         {
@@ -205,10 +200,10 @@ public class CuboEnBanda : MonoBehaviour
             return;
         }
 
-        // Continuar cayendo verticalmente.
         rb.MovePosition(nuevaPosicion);
     }
 
+    // Traslada el cubo sobre la banda hacia el punto de descarte.
     private void MoverSobreBanda()
     {
         if (!gestor.BandaEnMovimiento)
@@ -222,7 +217,6 @@ public class CuboEnBanda : MonoBehaviour
 
         rb.MovePosition(nuevaPosicion);
 
-        // VERIFICAR SI LLEGO AL DESCARTE
         float distanciaFinal = Vector3.Dot(
             nuevaPosicion - destino.position,
             direccion
@@ -240,7 +234,7 @@ public class CuboEnBanda : MonoBehaviour
         }
     }
 
-    // DETENER EL CUBO PARA RECOGERLO
+    // Detiene el cubo para que el DOBOT pueda recogerlo.
     public void DetenerParaRecoger()
     {
         EstaEnBanda = false;
@@ -249,7 +243,7 @@ public class CuboEnBanda : MonoBehaviour
         Debug.Log("Cubo detenido para el DOBOT.");
     }
 
-    // PEGAR EL CUBO A LA PINZA
+    // Fija el cubo al punto de agarre de la pinza del DOBOT.
     public void PegarAPinza(Transform puntoAgarre)
     {
         EstaEnBanda = false;
@@ -269,7 +263,7 @@ public class CuboEnBanda : MonoBehaviour
         Debug.Log("DOBOT recogio el cubo.");
     }
 
-    // SOLTAR EN LA CAJA DE CLASIFICACION
+    // Libera el cubo en el punto de clasificación.
     public void SoltarEn(Transform puntoSoltar)
     {
         EstaEnBanda = false;
@@ -292,7 +286,7 @@ public class CuboEnBanda : MonoBehaviour
         Debug.Log("DOBOT solto el cubo.");
     }
 
-    // NOTIFICAR FINALIZACION
+    // Marca el cubo como finalizado y notifica al gestor.
     public void MarcarFinalizado()
     {
         if (finalizado)

@@ -46,12 +46,12 @@ public class PanelFlotanteVR : MonoBehaviour
     private Vector3 posicionInicial;
     private bool ocupado = false;
 
+    // Localiza los botones y sus textos dentro del panel.
     private void Awake()
     {
         posicionInicial = transform.localPosition;
         ocupado = false;
 
-        // Identificar cada boton por separado
         botonSiguiente = BuscarObjeto(
             transform,
             "Boton_Siguiente"
@@ -62,7 +62,6 @@ public class PanelFlotanteVR : MonoBehaviour
             "Boton_Reiniciar"
         );
 
-        // Identificar el texto de cada boton
         textoSiguiente = botonSiguiente != null
             ? BuscarObjeto(botonSiguiente, "Texto_Siguiente")
             : null;

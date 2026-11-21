@@ -15,9 +15,9 @@ public class ReiniciarCubo : MonoBehaviour
     private XRGrabInteractable grab;
     private BoxCollider limite;
 
+    // Configura el cubo y guarda su posición y rotación inicial.
     private void Start()
     {
-        // Si no se asigna el cubo, utilizar el mismo objeto
         if (cuboPequeno == null)
             cuboPequeno = transform;
 
@@ -28,7 +28,6 @@ public class ReiniciarCubo : MonoBehaviour
             return;
         }
 
-        // Guardar posicion y rotacion inicial
         posicionInicial = cuboPequeno.position;
         rotacionInicial = cuboPequeno.rotation;
 
@@ -44,16 +43,15 @@ public class ReiniciarCubo : MonoBehaviour
         }
     }
 
+    // Reinicia el cubo si sale del área mientras no está siendo agarrado.
     private void FixedUpdate()
     {
         if (cuboPequeno == null)
             return;
 
-        // No reiniciar mientras este agarrado
         if (grab != null && grab.isSelected)
             return;
 
-        // Reiniciar si sale del area
         if (!EstaDentroDelTrigger())
         {
             Reiniciar();
@@ -76,9 +74,9 @@ public class ReiniciarCubo : MonoBehaviour
             Mathf.Abs(diferencia.z) <= mitad.z;
     }
 
+    // Detiene las físicas y restaura la posición inicial del cubo.
     private void Reiniciar()
     {
-        // Detener fisicas y restaurar posicion
         if (rb != null)
         {
 #if UNITY_6000_0_OR_NEWER

@@ -28,13 +28,12 @@ public class GestorEstacion3 : MonoBehaviour
     private int cubosGenerados = 0;
     private int cubosFinalizados = 0;
 
-    // INDICA SI LA BANDA PUEDE MOVERSE
     public bool BandaEnMovimiento =>
         bandaEncendida &&
         !robotTrabajando &&
         !simulacionFinalizada;
 
-    // BOTON ROJO: ENCENDER LA BANDA
+    // Enciende la banda transportadora al pulsar el botón rojo.
     public void EncenderBanda()
     {
         if (simulacionFinalizada)
@@ -50,7 +49,7 @@ public class GestorEstacion3 : MonoBehaviour
         );
     }
 
-    // BOTON VERDE: INICIAR DISPENSADOR
+    // Inicia la generación de cubos al pulsar el botón verde.
     public void IniciarDispensador()
     {
         if (!bandaEncendida)
@@ -82,19 +81,16 @@ public class GestorEstacion3 : MonoBehaviour
             "Dispensador iniciado."
         );
 
-        // REPRODUCIR VOZ #3
         ReproducirVoz(voz3);
 
-        // GENERAR CUBOS
         StartCoroutine(GenerarCubos());
     }
 
-    // GENERACION DE CUBOS ALEATORIOS
+    // Genera cubos de colores aleatorios con pausas entre ellos.
     private IEnumerator GenerarCubos()
     {
         for (int i = 0; i < maximoCubos; i++)
         {
-            // ESPERAR SI LA BANDA ESTA DETENIDA
             while (!BandaEnMovimiento)
             {
                 if (simulacionFinalizada)
@@ -103,18 +99,15 @@ public class GestorEstacion3 : MonoBehaviour
                 yield return null;
             }
 
-            // ESCOGER COLOR ALEATORIO
             TipoCubo tipo =
                 (TipoCubo)Random.Range(0, 3);
 
-            // GENERAR CUBO
             CuboEnBanda cubo = Instantiate(
                 prefabCubo,
                 puntoGeneracion.position,
                 puntoGeneracion.rotation
             );
 
-            // CONFIGURAR CUBO
             cubo.Inicializar(
                 this,
                 tipo,
@@ -129,7 +122,6 @@ public class GestorEstacion3 : MonoBehaviour
                 " generado. Color: " + tipo
             );
 
-            // ESPERAR ANTES DEL SIGUIENTE CUBO
             float tiempo = 0f;
 
             while (tiempo < tiempoEntreCubos)
@@ -151,24 +143,21 @@ public class GestorEstacion3 : MonoBehaviour
         );
     }
 
-    // LLAMADO POR LOS SENSORES
+    // Intenta recoger un cubo cuando un sensor lo detecta.
     public void IntentarRecoger(
         CuboEnBanda cubo,
         DobotBrazo brazo,
         TipoCubo colorSensor)
     {
-        // VERIFICAR QUE LA BANDA ESTE FUNCIONANDO
         if (!BandaEnMovimiento)
             return;
 
         if (cubo == null || !cubo.EstaEnBanda)
             return;
 
-        // VERIFICAR COLOR
         if (cubo.Tipo != colorSensor)
             return;
 
-        // VERIFICAR ROBOT
         if (brazo == null)
         {
             Debug.LogError(
@@ -187,10 +176,8 @@ public class GestorEstacion3 : MonoBehaviour
             return;
         }
 
-        // DETENER LA BANDA
         robotTrabajando = true;
 
-        // DETENER EL CUBO
         cubo.DetenerParaRecoger();
 
         Debug.Log(
@@ -201,13 +188,12 @@ public class GestorEstacion3 : MonoBehaviour
             "Banda detenida. DOBOT trabajando."
         );
 
-        // INICIAR CLASIFICACION
         StartCoroutine(
             ClasificarCubo(cubo, brazo)
         );
     }
 
-    // CLASIFICAR CUBO CON EL DOBOT
+    // Coordina al DOBOT para clasificar el cubo detectado.
     private IEnumerator ClasificarCubo(
         CuboEnBanda cubo,
         DobotBrazo brazo)
@@ -218,15 +204,12 @@ public class GestorEstacion3 : MonoBehaviour
             yield break;
         }
 
-        // ESPERAR HASTA QUE TERMINE EL DOBOT
         yield return StartCoroutine(
             brazo.RecogerYDepositar(cubo)
         );
 
-        // COMPROBAR SI EL CUBO SIGUE EXISTIENDO
         if (cubo != null)
         {
-            // CLASIFICACION CORRECTA
             if (brazo.UltimaRecogidaExitosa)
             {
                 Debug.Log(
@@ -238,7 +221,6 @@ public class GestorEstacion3 : MonoBehaviour
             }
             else
             {
-                // EL ROBOT NO CONSIGUIO ALCANZARLO
                 Debug.LogWarning(
                     "El DOBOT no pudo alcanzar el cubo " +
                     cubo.Tipo +
@@ -257,7 +239,6 @@ public class GestorEstacion3 : MonoBehaviour
             );
         }
 
-        // LIBERAR LA BANDA
         robotTrabajando = false;
 
         if (!simulacionFinalizada)
@@ -268,7 +249,7 @@ public class GestorEstacion3 : MonoBehaviour
         }
     }
 
-    // NOTIFICAR FINALIZACION DE UN CUBO
+    // Registra un cubo finalizado y comprueba si terminó la simulación.
     public void NotificarCuboFinalizado()
     {
         if (simulacionFinalizada)
@@ -281,7 +262,6 @@ public class GestorEstacion3 : MonoBehaviour
             cubosFinalizados + "/" + maximoCubos
         );
 
-        // COMPROBAR SI TERMINARON TODOS LOS CUBOS
         if (dispensadorIniciado &&
             cubosGenerados == maximoCubos &&
             cubosFinalizados >= maximoCubos)
@@ -290,7 +270,7 @@ public class GestorEstacion3 : MonoBehaviour
         }
     }
 
-    // FINALIZAR LA SIMULACION
+    // Finaliza la simulación y reproduce la voz de cierre.
     private void FinalizarSimulacion()
     {
         if (simulacionFinalizada)
@@ -304,11 +284,10 @@ public class GestorEstacion3 : MonoBehaviour
             "Simulacion finalizada correctamente."
         );
 
-        // REPRODUCIR VOZ #4
         ReproducirVoz(voz4);
     }
 
-    // REPRODUCCION DE AUDIOS
+    // Reproduce una narración evitando la superposición de voces.
     private void ReproducirVoz(AudioSource audio)
     {
         if (audio == null)
@@ -320,7 +299,6 @@ public class GestorEstacion3 : MonoBehaviour
             return;
         }
 
-        // EVITAR SUPERPOSICION DE VOCES
         if (voz3 != null && voz3 != audio)
         {
             voz3.Stop();

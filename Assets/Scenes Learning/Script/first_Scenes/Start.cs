@@ -9,44 +9,39 @@ public class InicioAudio : MonoBehaviour
     [Header("Indicador")]
     public GameObject marca;
 
-    [Header("Zona de detección")]
+    [Header("Zona de detecciï¿½n")]
     public GameObject zonaDeteccion;
 
+    // Oculta los indicadores e inicia la secuencia de audio.
     void Start()
     {
-        // Ocultar al iniciar
         if (marca != null)
             marca.SetActive(false);
 
         if (zonaDeteccion != null)
             zonaDeteccion.SetActive(false);
 
-        // Esperar 2 segundos y luego iniciar audio
         StartCoroutine(IniciarAudio());
     }
 
+    // Reproduce el audio y activa la marca y la zona de detecciÃ³n al terminar.
     IEnumerator IniciarAudio()
     {
-        // Esperar 2 segundos
         yield return new WaitForSeconds(2f);
 
-        // Iniciar audio
         if (audioSource != null)
         {
             audioSource.Play();
             Debug.Log("Audio iniciado");
         }
 
-        // Esperar a que termine
         yield return new WaitWhile(() => audioSource.isPlaying);
 
         Debug.Log("Audio terminado");
 
-        // Activar marca
         if (marca != null)
             marca.SetActive(true);
 
-        // Activar zona de detección
         if (zonaDeteccion != null)
             zonaDeteccion.SetActive(true);
     }
